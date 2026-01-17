@@ -69,7 +69,7 @@ The `content` parameter of the `Notes` tool must be a **valid stringified JSON**
 {
   "type": "excalidraw",
   "version": 2,
-  "source": "[https://github.com/zsviczian/obsidian-excalidraw-plugin](https://github.com/zsviczian/obsidian-excalidraw-plugin)",
+  "source": "[https://github.com/tan-yong-sheng/triliumnext-skills](https://github.com/tan-yong-sheng/triliumnext-skills)",
   "elements": [...],
   "appState": {
     "gridSize": null,

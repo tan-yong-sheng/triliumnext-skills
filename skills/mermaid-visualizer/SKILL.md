@@ -7,7 +7,7 @@ description: Transform text content into professional Mermaid diagrams for prese
 
 ## Overview
 
-Convert text content into clean, professional Mermaid diagrams optimized for presentations and documentation. Automatically handles common syntax pitfalls (list syntax conflicts, subgraph naming, spacing issues) to ensure diagrams render correctly in Obsidian, GitHub, and other Mermaid-compatible platforms.
+Convert text content into clean, professional Mermaid diagrams optimized for presentations and documentation. Automatically handles common syntax pitfalls (list syntax conflicts, subgraph naming, spacing issues) to ensure diagrams render correctly in TriliumNext Note / Trilium Note, GitHub, and other Mermaid-compatible platforms.
 
 ## Quick Start
 
@@ -22,7 +22,7 @@ When creating a Mermaid diagram:
 - Vertical layout (TB) unless horizontal requested
 - Medium detail level (balanced between simplicity and information)
 - Professional color scheme with semantic colors
-- Obsidian/GitHub compatible syntax
+- TriliumNext Note / Trilium Note/GitHub compatible syntax
 
 ## Diagram Types
 
@@ -214,7 +214,7 @@ Response: [Analyze → Choose comparison layout → Generate with contrasting st
 5. **Output with context**
    - Wrap in ```mermaid code fence
    - Add brief explanation of diagram structure
-   - Mention rendering compatibility (Obsidian, GitHub, etc.)
+   - Mention rendering compatibility (TriliumNext Note / Trilium Note, GitHub, etc.)
    - Offer to adjust or create variations
 
 ## Color Scheme Defaults
@@ -272,7 +272,7 @@ Before outputting, verify:
 - [ ] Layout direction specified
 - [ ] Style declarations present
 - [ ] No ambiguous node references
-- [ ] Compatible with Obsidian/GitHub renderers
+- [ ] Compatible with TriliumNext Note / Trilium Note/GitHub renderers
 
 ---
 
