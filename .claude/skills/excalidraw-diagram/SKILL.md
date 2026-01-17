@@ -159,7 +159,7 @@ You must use the `create_note` tool from `triliumnext-mcp`: https://github.com/t
 
 ```
 create_note(
-    "title": "sample title",
+    "title": "Project Timeline - Roadmap",
     "content": '{"type": "excalidraw", "version": 2, "elements": [...], ...}',
     "type": "canvas",
     "mime": "application/json"
