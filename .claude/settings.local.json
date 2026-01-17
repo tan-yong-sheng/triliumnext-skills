@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\tys\\Documents\\Coding"
+    ]
+  },
+  "enabledPlugins": {
+    "example-skills@anthropic-agent-skills": true,
+    "plugin-dev@claude-plugins-official": true
+  }
+}

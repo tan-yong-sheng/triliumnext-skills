@@ -1,0 +1,22 @@
+{
+  "name": "triliumnext-skills",
+  "owner": {
+    "name": "Tan Yong Sheng",
+    "email": "tys203831@gmail.com"
+  },
+  "metadata": {
+    "description": "Generate Mermaid, Excalidraw from text",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "triliumnext-skills",
+      "description": "Generate Excalidraw, and Mermaid diagrams in Trilium Notes / TriliumNext Notes",
+      "source": "./",
+      "skills": [
+        "./excalidraw-diagram",
+        "./mermaid-visualizer"
+      ]
+    }
+  ]
+}
