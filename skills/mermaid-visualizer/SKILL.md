@@ -295,7 +295,8 @@ You must use the `create_note` tool from `triliumnext-mcp`: https://github.com/t
 
 **Tool Call Logic:**
 
-(i) Default option: **create a mermaid note**
+- Create a mermaid note:
+
 ```
 create_note(
     "title": "Psample title",

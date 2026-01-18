@@ -1,200 +1,173 @@
 ---
 name: mindmap-builder
-description: Create and edit mind maps to organize ideas hierarchically and visualize concepts. Use for mind maps, flowcharts, brainstorming, and structured concept mapping.
-
+description: Create and edit hierarchical mind maps to organize ideas and visualize concepts using specific JSON structures. Automatically handles common syntax pitfalls (list syntax conflicts) to ensure diagrams render correctly in TriliumNext Note / Trilium Note.
 ---
 
 # Mindmap Builder
 
 ## Overview
 
-Create hierarchical mindmaps from text content and save them directly to TriliumNext using the MCP tool.
+Create hierarchical mindmaps by generating specific structured JSON content.
+
+
+## Quick Start
+
+1.  **Analyze Content**: Identify the root topic and primary sub-concepts.
+2.  **Determine Structure**: Decide if the flow is linear (Process), comparative (Split), or radial (Standard Mindmap).
+3.  **Assign Directions**:
+    * `direction: 1` (Right) for outputs/future/steps.
+    * `direction: 0` (Left) for inputs/past/causes.
+4.  **Generate JSON**: Construct the `nodeData` object with unique IDs and children arrays.
+5.  **Call Tool**: Use `Notes` with the JSON string.
+
+## Diagram Types
+
+Since this tool uses a tree structure, map the conceptual types to the following layouts:
+
+### 1. Process Flow (Linear Layout)
+* **Structure**: Root node = Start. All children set to `direction: 1` (Right).
+* **Use Case**: Step-by-step instructions, timelines, or pipelines.
+* **Visual**: Grows in a single direction to mimic a flow chart.
+
+### 2. Circular Flow (Cycle Breakdown)
+* **Structure**: Root node = The Cycle Name. Main phases are Level 1 children.
+* **Simulation**: Arrange children clockwise or sequentially on the right side.
+* **Note**: Since trees do not loop, represent the "return" to start as the final node text (e.g., "Return to Step 1").
+
+### 3. Comparison Diagram (Split Layout)
+* **Structure**: Root node = "VS" or Subject.
+* **Layout**:
+    * Subject A branch → `direction: 0` (Left)
+    * Subject B branch → `direction: 1` (Right)
+* **Use Case**: Pros vs. Cons, Old vs. New, Problem vs. Solution.
+
+### 4. Mindmap (Standard Radial)
+* **Structure**: Balanced tree.
+* **Layout**: Alternating branches left and right to maintain visual equilibrium.
+
+### 5. Sequence Breakdown (Timeline Tree)
+* **Structure**: Root = Event Name.
+* **Layout**: Level 1 nodes are time phases (e.g., "Phase 1", "Phase 2"). Level 2 nodes are specific interactions.
+* **Direction**: strictly Right-oriented.
+
+### 6. State Hierarchy (Status Breakdown)
+* **Structure**: Root = Entity Name.
+* **Layout**: Level 1 nodes are States (e.g., "Idle", "Active", "Error"). Level 2 nodes are triggers or properties of that state.
+
+---
+
+## Critical Syntax Rules
+
+* **Rule 1: Unique IDs**: Every node in the `nodeData` hierarchy must have a unique `id` string (e.g., "root", "sub1", "sub2").
+* **Rule 2: Strict JSON Format**: Content must be valid, parseable JSON. No trailing commas.
+* **Rule 3: Children Arrays**: Leaf nodes must have an empty `children: []` array.
+* **Rule 4: Text Content**: Node `topic` must be plain text. Avoid Markdown or HTML tags inside the JSON strings.
+* **Rule 5: Direction Integer**: `direction` must be `0` (left) or `1` (right). Do not use strings like "left".
+* **Rule 6: Root Node Integrity**: There must be exactly one top-level object containing the `root` ID.
+
+---
+
+## Configuration Options
+
+* **Theme Names**: `default`, `primary`, `warning`, `danger`, `success`, `info`.
+* **Directions**:
+    * `0`: Left (Inputs, Causes)
+    * `1`: Right (Outputs, Effects)
+
+## Example Usage Patterns
+
+**User Request**: "Compare SQL and NoSQL."
+**Pattern**: Comparison Diagram (Type 3). Root "Database Types". Left branch "SQL", Right branch "NoSQL".
+
+**User Request**: "Show the steps to deploy code."
+**Pattern**: Process Flow (Type 1). Root "Deployment". All steps extend to the Right.
+
+---
 
 ## Workflow
 
-1. **Analyze Content**: Identify the central topic, main branches, and sub-concepts
-2. **Structure Hierarchy**: Organize ideas into a tree structure with appropriate nesting
-3. **Balance Layout**: Distribute branches between left (direction: 0) and right (direction: 1) sides
-4. **Apply Styling**: Choose appropriate theme and colors for visual appeal
-5. **Generate JSON**: Construct the complete mindmap JSON structure
-6. **Save to TriliumNext**: Use the `create_note` MCP tool to save the mindmap
+### Color Scheme Defaults
+* **Root Node**: `#4A90E2` (Bright Blue) - The anchor.
+* **Level 1 Nodes**: `#50E3C2` (Teal) - Main categories.
+* **Level 2 Nodes**: `#B8E986` (Light Green) - Details.
+* **Warning/Error Nodes**: `#FF5757` (Red).
 
-## Mindmap Structure Guide
+### Common Patterns
 
-### Central Topic
-- Place the main subject at the center (root node)
-- Use clear, concise wording
-- Apply root-level styling for emphasis
+#### Swimlane Pattern (Grouping)
+* *Simulation*: Use Level 1 nodes as "Lanes" (e.g., "Frontend", "Backend") and Level 2 nodes as tasks.
 
-### Branch Organization
-- **Left side (direction: 0)**: Typically for inputs, causes, problems, or past
-- **Right side (direction: 1)**: Typically for outputs, effects, solutions, or future
-- **Balanced distribution**: Aim for roughly equal content on both sides
+#### Feedback Loop Pattern
+* *Simulation*: Use a specific node style (e.g., color red) to indicate a "Return" step, as actual link loops are not supported in tree JSON.
 
-### Hierarchy Levels
-- **Level 1**: Main categories/themes (direct children of root)
-- **Level 2**: Subcategories or specific items
-- **Level 3+**: Details, examples, or further breakdowns
-- **Limit depth**: Keep to 4-5 levels maximum for clarity
+#### Hub and Spoke Pattern
+* *Simulation*: Standard Mindmap with a massive Root node and shallow depth (many children, no grandchildren).
 
-## Content Analysis Patterns
-
-### Topic Exploration
-When users want to explore a topic:
-- Central topic → Main aspects → Specific elements → Examples/details
-
-### Problem-Solution Structure
-- Left: Problems, challenges, current state
-- Right: Solutions, opportunities, future state
-
-### Process or System
-- Left: Inputs, prerequisites, preparation
-- Right: Outputs, results, outcomes
-
-### Comparison or Analysis
-- Left: Option A, traditional approach, pros
-- Right: Option B, modern approach, cons
-
-## Styling Guidelines
-
-### Theme Selection
-- **Dark theme**: Professional presentations, technical topics
-- **Light theme**: Educational content, collaborative work
-- **Custom colors**: Match brand or topic (e.g., green for environmental topics)
-
-### Color Coding
-- Use consistent colors for related concepts
-- Apply palette colors from theme for harmony
-- Highlight important nodes with contrasting colors
-
-### Typography
-- Root node: Larger font size (24px+)
-- Main branches: Medium size (18-20px)
-- Sub-items: Standard size (14-16px)
-- Use bold for emphasis on key concepts
-
-## JSON Generation Rules
-
-1. **Unique IDs**: Generate unique identifiers for each node
-2. **Direction Balance**: Alternate between left (0) and right (1) for main branches
-3. **Style Consistency**: Use theme colors and maintain visual hierarchy
-4. **Complete Structure**: Include all required fields (see schema reference)
-5. **Validation**: Ensure proper nesting and valid JSON syntax
-
-For detailed JSON structure, see [references/mindmap-schema.md](references/mindmap-schema.md)
-
-## Common Mindmap Types
-
-### Knowledge Organization
-```
-Central Topic
-├── Category 1 (left)
-│   ├── Subcategory A
-│   └── Subcategory B
-└── Category 2 (right)
-    ├── Subcategory C
-    └── Subcategory D
-```
-
-### Project Planning
-```
-Project Name
-├── Requirements (left)
-├── Resources (left)
-├── Timeline (right)
-└── Deliverables (right)
-```
-
-### Decision Making
-```
-Decision Point
-├── Factors (left)
-│   ├── Pros
-│   └── Cons
-└── Options (right)
-    ├── Option A
-    └── Option B
-```
-
-## TriliumNext Integration
-
-### Tool Call Format
-Use the `create_note` tool from `triliumnext-mcp`:
-
-```javascript
-create_note({
-    title: "Topic Name - Mindmap",
-    content: JSON.stringify(mindmapData),
-    type: "code",
-    mime: "application/json"
-})
-```
-
-### Content Parameter
-- Pass the complete JSON structure as a stringified object
-- Do NOT wrap in code blocks within the function call
-- Ensure valid JSON syntax before calling
-
-### Note Organization
-- Use descriptive titles: "[Topic] - Mindmap"
-- Consider adding labels for categorization
-- Link related mindmaps using relations
-
-## Example Workflow
-
-**User Request**: "Create a mindmap for learning JavaScript"
-
-**Analysis**:
-- Central topic: "Learning JavaScript"
-- Left side: Fundamentals, basics, prerequisites
-- Right side: Advanced topics, projects, career paths
-
-**Structure**:
-```
-Learning JavaScript
-├── Fundamentals (left)
-│   ├── Variables & Data Types
-│   ├── Functions
-│   └── Control Structures
-├── Core Concepts (left)
-│   ├── DOM Manipulation
-│   └── Event Handling
-├── Advanced Topics (right)
-│   ├── Async Programming
-│   ├── ES6+ Features
-│   └── Frameworks
-└── Practice (right)
-    ├── Projects
-    └── Coding Challenges
-```
-
-**Styling**: Use professional theme with color-coding by difficulty level
-
-## Best Practices
-
-1. **Clarity**: Use clear, concise node text
-2. **Balance**: Distribute content evenly between sides
-3. **Hierarchy**: Maintain logical parent-child relationships
-4. **Visual Appeal**: Apply consistent styling and colors
-5. **Completeness**: Include all relevant subtopics without overwhelming
-6. **Actionability**: Make nodes specific enough to be useful
+---
 
 ## Quality Checklist
 
-Before generating the final JSON:
-- [ ] Central topic clearly defined
-- [ ] Balanced left/right distribution
-- [ ] Logical hierarchy with appropriate nesting
-- [ ] Consistent styling applied
-- [ ] Unique IDs for all nodes
-- [ ] Valid JSON structure
-- [ ] Appropriate theme selected
-- [ ] All required fields present
+- [ ] **Valid JSON**: Is the string valid JSON without syntax errors?
+- [ ] **ID Uniqueness**: Are all node IDs distinct?
+- [ ] **Balance**: Is the tree roughly balanced (unless it's a specific flow)?
+- [ ] **Depth Control**: Is the hierarchy limited to 4-5 levels to prevent canvas clutter?
+- [ ] **Node Brevity**: Are topics concise (1-5 words)?
 
-## Error Prevention
+---
 
-- **Invalid JSON**: Always validate syntax before output
-- **Missing IDs**: Ensure every node has a unique identifier
-- **Unbalanced structure**: Check left/right distribution
-- **Inconsistent styling**: Apply theme colors systematically
-- **Deep nesting**: Limit to 4-5 levels for readability
+## Implementation Notes & Tool Usage
+
+### 1. Generating the Filename (Title)
+* Create a descriptive title.
+* **Format**: `[Topic] - Mindmap`
+* **Example**: `Project Alpha - Mindmap`
+
+### 2. Constructing the Content
+You must generate a specific JSON object structure.
+
+**Schema Structure:**
+```json
+{
+  "nodeData": {
+    "id": "root",
+    "topic": "Central Topic",
+    "children": [
+      {
+        "id": "child_1",
+        "topic": "Left Branch",
+        "direction": 0,
+        "children": []
+      },
+      {
+        "id": "child_2",
+        "topic": "Right Branch",
+        "direction": 1,
+        "children": []
+      }
+    ]
+  },
+  "linkData": {}
+}
+```
+
+### 3. Calling the MCP Tool
+- Tool: Notes
+- Type: mindMap
+- Mime: application/json
+
+Example Call:
+
+```
+create_note({
+    title: "Launch Plan - Mindmap",
+    type: "mindMap",
+    mime: "application/json",
+    content: "{\"nodeData\":{\"id\":\"root\",\"topic\":\"Launch\",\"children\":[{\"id\":\"c1\",\"topic\":\"Prep\",\"direction\":0,\"children\":[]},{\"id\":\"c2\",\"topic\":\"Go-Live\",\"direction\":1,\"children\":[]}]}}"
+})
+```
+
+## References
+
+- Ensure proper nesting of the children array.
+- `direction` property is required for Level 1 children to determine layout side.
+
