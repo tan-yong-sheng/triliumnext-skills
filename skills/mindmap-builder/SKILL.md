@@ -1,60 +1,13 @@
 ---
 name: mindmap-builder
-description: Create and edit hierarchical mind maps to organize ideas and visualize concepts using specific JSON structures. Automatically handles common syntax pitfalls (list syntax conflicts) to ensure diagrams render correctly in TriliumNext Note / Trilium Note.
+description: Create and edit hierarchical mindmap to organize ideas and visualize concepts using specific JSON structures. Automatically handles common syntax pitfalls (list syntax conflicts) to ensure diagrams render correctly in TriliumNext Note / Trilium Note.
 ---
 
 # Mindmap Builder
 
 ## Overview
 
-Create hierarchical mindmaps by generating specific structured JSON content.
-
-
-## Quick Start
-
-1.  **Analyze Content**: Identify the root topic and primary sub-concepts.
-2.  **Determine Structure**: Decide if the flow is linear (Process), comparative (Split), or radial (Standard Mindmap).
-3.  **Assign Directions**:
-    * `direction: 1` (Right) for outputs/future/steps.
-    * `direction: 0` (Left) for inputs/past/causes.
-4.  **Generate JSON**: Construct the `nodeData` object with unique IDs and children arrays.
-5.  **Call Tool**: Use `Notes` with the JSON string.
-
-## Diagram Types
-
-Since this tool uses a tree structure, map the conceptual types to the following layouts:
-
-### 1. Process Flow (Linear Layout)
-* **Structure**: Root node = Start. All children set to `direction: 1` (Right).
-* **Use Case**: Step-by-step instructions, timelines, or pipelines.
-* **Visual**: Grows in a single direction to mimic a flow chart.
-
-### 2. Circular Flow (Cycle Breakdown)
-* **Structure**: Root node = The Cycle Name. Main phases are Level 1 children.
-* **Simulation**: Arrange children clockwise or sequentially on the right side.
-* **Note**: Since trees do not loop, represent the "return" to start as the final node text (e.g., "Return to Step 1").
-
-### 3. Comparison Diagram (Split Layout)
-* **Structure**: Root node = "VS" or Subject.
-* **Layout**:
-    * Subject A branch → `direction: 0` (Left)
-    * Subject B branch → `direction: 1` (Right)
-* **Use Case**: Pros vs. Cons, Old vs. New, Problem vs. Solution.
-
-### 4. Mindmap (Standard Radial)
-* **Structure**: Balanced tree.
-* **Layout**: Alternating branches left and right to maintain visual equilibrium.
-
-### 5. Sequence Breakdown (Timeline Tree)
-* **Structure**: Root = Event Name.
-* **Layout**: Level 1 nodes are time phases (e.g., "Phase 1", "Phase 2"). Level 2 nodes are specific interactions.
-* **Direction**: strictly Right-oriented.
-
-### 6. State Hierarchy (Status Breakdown)
-* **Structure**: Root = Entity Name.
-* **Layout**: Level 1 nodes are States (e.g., "Idle", "Active", "Error"). Level 2 nodes are triggers or properties of that state.
-
----
+Create hierarchical mindmaps by generating specific structured JSON content. Automatically handles common syntax pitfalls (list syntax conflicts) to ensure diagrams render correctly in TriliumNext Note / Trilium Note.
 
 ## Critical Syntax Rules
 
@@ -65,109 +18,166 @@ Since this tool uses a tree structure, map the conceptual types to the following
 * **Rule 5: Direction Integer**: `direction` must be `0` (left) or `1` (right). Do not use strings like "left".
 * **Rule 6: Root Node Integrity**: There must be exactly one top-level object containing the `root` ID.
 
----
 
-## Configuration Options
+## Cognitive Load Management
 
-* **Theme Names**: `default`, `primary`, `warning`, `danger`, `success`, `info`.
-* **Directions**:
-    * `0`: Left (Inputs, Causes)
-    * `1`: Right (Outputs, Effects)
+### Miller's Rule (7±2) - Core Limits
+* **Max Children per Node**: 5-7 children (never exceed 9)
+* **Max Depth**: 3-4 levels maximum (beyond 4 creates cognitive overload)
+* **Node Topics**: 1-4 words optimal, max 6 words, 25 characters maximum
+* **Total Nodes**: 20-40 nodes for standard complexity
+* **Visual Colors**: Max 5-6 distinct colors to prevent confusion
 
-## Example Usage Patterns
 
-**User Request**: "Compare SQL and NoSQL."
-**Pattern**: Comparison Diagram (Type 3). Root "Database Types". Left branch "SQL", Right branch "NoSQL".
-
-**User Request**: "Show the steps to deploy code."
-**Pattern**: Process Flow (Type 1). Root "Deployment". All steps extend to the Right.
-
----
-
-## Workflow
-
-### Color Scheme Defaults
-* **Root Node**: `#4A90E2` (Bright Blue) - The anchor.
-* **Level 1 Nodes**: `#50E3C2` (Teal) - Main categories.
-* **Level 2 Nodes**: `#B8E986` (Light Green) - Details.
-* **Warning/Error Nodes**: `#FF5757` (Red).
-
-### Common Patterns
-
-#### Swimlane Pattern (Grouping)
-* *Simulation*: Use Level 1 nodes as "Lanes" (e.g., "Frontend", "Backend") and Level 2 nodes as tasks.
-
-#### Feedback Loop Pattern
-* *Simulation*: Use a specific node style (e.g., color red) to indicate a "Return" step, as actual link loops are not supported in tree JSON.
-
-#### Hub and Spoke Pattern
-* *Simulation*: Standard Mindmap with a massive Root node and shallow depth (many children, no grandchildren).
+## Visual Styles
+* **minimal**: Clean, high contrast, reduced visual noise
+* **professional**: Business-friendly with subtle colors
+* **colorful**: Vibrant, engaging colors for learning/creativity
+* **academic**: Structured, formal appearance
 
 ---
+
+## Layout Selection Guidelines
+
+### ⚠️ Critical Layout Choice Decision
+
+**AVOID RADIAL (Two-sided) LAYOUTS** in most cases. Radial layouts often create:
+- **Visual Chaos**: Intersecting lines and crossing branches
+- **Cognitive Overload**: Eye doesn't know where to start or follow
+- **Poor Readability**: Text overlaps and navigation confusion
+- **Lost Hierarchy**: Can't distinguish main from sub-concepts
+
+### When to Use Each Layout
+
+#### ✅ **LEFT-SIDED Layout** (Recommended for most content)
+**Perfect for:**
+- **Knowledge breakdown** and analysis
+- **Review content** (like rating/evaluating multiple items)
+- **Educational content** (lessons, tutorials, explanations)
+- **Research summaries** (papers, articles, videos)
+- **Categorization** (organizing topics by type/theme)
+
+**Why it works:**
+- Natural left-to-right reading flow into central concept
+- Clean visual hierarchy with no crossing lines
+- Easy to follow logical progression
+- Reduces cognitive load significantly
+
+**Examples:**
+- "AI Agents Review" (analyzing multiple tools/agents)
+- "Video Content Summary" (breaking down main topics)
+- "Technology Comparison" (features flowing into main concept)
+
+#### ✅ **RIGHT-SIDED Layout**
+**Perfect for:**
+- **Process flows** and step-by-step procedures
+- **Timelines** and sequential events
+- **Implementation plans** (what to do next)
+- **Troubleshooting guides** (problem → solutions)
+
+**Examples:**
+- "Deployment Steps"
+- "Project Timeline"
+- "Setup Instructions"
+
+#### ⚠️ **RADIAL Layout** (Use sparingly)
+**Only use when:**
+- Content has **natural opposing sides** (pros vs cons)
+- **True comparison** of exactly two things
+- **Balanced analysis** where left/right sides are equally important
+- Simple content (max 3-4 branches per side)
+
+**Examples:**
+- "SQL vs NoSQL" (feature comparison)
+- "Pros vs Cons of Technology X"
+- "Before vs After Analysis"
+
+### Content Type → Layout Mapping
+
+| Content Type | Recommended Layout | Reasoning |
+|-------------|-------------------|-----------|
+| Video summaries | LEFT-SIDED | Breaking down topics into central concept |
+| Technology reviews | LEFT-SIDED | Analysis flows into main subject |
+| Educational content | LEFT-SIDED | Natural learning progression |
+| Process documentation | RIGHT-SIDED | Sequential flow from start to end |
+| Comparison studies | LEFT-SIDED (usually) | Unless true 50/50 comparison |
+| Research analysis | LEFT-SIDED | Findings flow into main topic |
+| Feature breakdowns | LEFT-SIDED | Components flow into main product |
+
+### Layout Decision Framework
+
+**Ask yourself:**
+1. **Is this content analytical/review-based?** → Use LEFT-SIDED
+2. **Is this content process/sequence-based?** → Use RIGHT-SIDED
+3. **Is this content a true comparison of exactly two equal things?** → Consider RADIAL (but often LEFT-SIDED is still better)
+
+**Default choice:** When in doubt, use **LEFT-SIDED** layout. It works for 80% of use cases and avoids visual complexity.
 
 ## Quality Checklist
 
-- [ ] **Valid JSON**: Is the string valid JSON without syntax errors?
-- [ ] **ID Uniqueness**: Are all node IDs distinct?
-- [ ] **Balance**: Is the tree roughly balanced (unless it's a specific flow)?
-- [ ] **Depth Control**: Is the hierarchy limited to 4-5 levels to prevent canvas clutter?
-- [ ] **Node Brevity**: Are topics concise (1-5 words)?
+### Essential Validation
+- [ ] **Valid JSON**: No syntax errors or trailing commas
+- [ ] **Unique IDs**: All node IDs are distinct
+- [ ] **Children Arrays**: Leaf nodes have empty `children: []`
+- [ ] **Node Limits**: Max 5-7 children per node, 3-4 levels deep
+- [ ] **Readable Topics**: 1-4 words, under 25 characters
+- [ ] **Clear Hierarchy**: Related concepts grouped logically
 
----
+## Implementation
 
-## Implementation Notes & Tool Usage
-
-### 1. Generating the Filename (Title)
-* Create a descriptive title.
-* **Format**: `[Topic] - Mindmap`
-* **Example**: `Project Alpha - Mindmap`
-
-### 2. Constructing the Content
-You must generate a specific JSON object structure.
-
-**Schema Structure:**
+### JSON Structure
+Generate a JSON object with this essential structure:
 ```json
 {
   "nodeData": {
     "id": "root",
     "topic": "Central Topic",
-    "children": [
-      {
-        "id": "child_1",
-        "topic": "Left Branch",
-        "direction": 0,
-        "children": []
-      },
-      {
-        "id": "child_2",
-        "topic": "Right Branch",
-        "direction": 1,
-        "children": []
-      }
-    ]
-  },
-  "linkData": {}
+    "direction": 0,
+    "children": []
+  }
 }
-```
 
-### 3. Calling the MCP Tool
-- Tool: Notes
-- Type: mindMap
-- Mime: application/json
+⚠️ Critical Note Configuration
+You must use the exact parameters below. Do not deviate.
+- Function: Notes
+- Type: mindMap (Strictly. Do NOT use "noteMap" or "mermaid")
+- MIME: application/json
 
-Example Call:
+⛔ Negative Constraints (Common Failures)
+- NEVER use type: "noteMap": This is for directory structures and requires empty content. Using this will cause a CONTENT_VALIDATION_ERROR.
+- NEVER use type: "mermaid": This parser cannot read JSON. It will result in a rendering error.
+- NEVER use type: "code": This will display raw text rather than the visual map.
 
-```
-create_note({
-    title: "Launch Plan - Mindmap",
-    type: "mindMap",
-    mime: "application/json",
-    content: "{\"nodeData\":{\"id\":\"root\",\"topic\":\"Launch\",\"children\":[{\"id\":\"c1\",\"topic\":\"Prep\",\"direction\":0,\"children\":[]},{\"id\":\"c2\",\"topic\":\"Go-Live\",\"direction\":1,\"children\":[]}]}}"
-})
-```
+---
+
+### 2. Fix `references/mindmap-schema.md`
+Add an "Integration Guide" section at the top or bottom of the schema file. This gives the AI context on *how* this JSON is consumed by the application, reinforcing the correct MIME type.
+
+**Add this section to `references/mindmap-schema.md`:**
+
+```markdown
+## Trilium Integration Requirements
+
+To render this JSON schema as a visual mindmap in Trilium/TriliumNext, the note must be created with specific attributes.
+
+### Required Note Attributes
+| Attribute | Value | Reason |
+|-----------|-------|--------|
+| **type** | `"mindMap"` | Triggers the canvas rendering engine. |
+| **mime** | `"application/json"` | Tells the system to parse content as a JSON object. |
+
+### ⛔ Forbidden Types
+* **`noteMap`**: This is a different visualization engine for Note Hierarchies (file trees). It throws an error if content is provided.
+* **`mermaid`**: This engine expects text-based syntax (e.g., `graph TD`), not JSON.
+
+### Key Requirements
+- **Tool**: Use `create_note` with `type: "mindMap"` and `mime: "application/json"`
+- **Directions**: `0` = left, `1` = right, `2` = both (for root in radial)
+- **IDs**: Must be unique strings for each node
+- **Children**: Always include empty `children: []` array for leaf nodes
+
 
 ## References
 
-- Ensure proper nesting of the children array.
-- `direction` property is required for Level 1 children to determine layout side.
-
+For detailed syntax rules and troubleshooting, see:
+- [references/mindmap-schema.md](references/mindmap-schema.md) - Complete syntax reference for mindmap.

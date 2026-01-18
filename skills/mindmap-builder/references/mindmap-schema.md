@@ -251,3 +251,127 @@ The theme defines the overall appearance and color palette:
 3. **Styling**: Use consistent color schemes within themes
 4. **Performance**: Limit total nodes to under 100 for optimal rendering
 5. **Accessibility**: Ensure sufficient color contrast in custom styles
+
+## Layout Examples
+
+### 1. Right-Oriented Mindmap
+All branches extend to the right side only (direction: 1):
+
+```json
+{
+  "nodeData": {
+    "id": "bcc93d68bf00ed3e",
+    "topic": "Main Topic",
+    "children": [
+      {
+        "topic": "Branch 1",
+        "id": "bcc94d2326965b73",
+        "direction": 1,
+        "children": [
+          {
+            "topic": "Sub-branch 1.1",
+            "id": "bcc952b42243432e",
+            "children": []
+          }
+        ]
+      },
+      {
+        "topic": "Branch 2",
+        "id": "bcc94c0787107540",
+        "direction": 1,
+        "children": []
+      }
+    ]
+  },
+  "direction": 1,
+  "theme": {
+    "name": "Dark",
+    "type": "dark"
+  }
+}
+```
+
+### 2. Left-Oriented Mindmap
+All branches extend to the left side only (direction: 0):
+
+```json
+{
+  "nodeData": {
+    "id": "bcc93d68bf00ed3e",
+    "topic": "Main Topic",
+    "children": [
+      {
+        "topic": "Branch 1",
+        "id": "bcc94d2326965b73",
+        "direction": 0,
+        "children": [
+          {
+            "topic": "Sub-branch 1.1",
+            "id": "bcc952b42243432e",
+            "children": []
+          }
+        ]
+      },
+      {
+        "topic": "Branch 2",
+        "id": "bcc94c0787107540",
+        "direction": 0,
+        "children": []
+      }
+    ]
+  },
+  "direction": 0,
+  "theme": {
+    "name": "Dark",
+    "type": "dark"
+  }
+}
+```
+
+### 3. Two-Sided Mindmap
+Branches distributed on both left and right sides (direction: 2):
+
+```json
+{
+  "nodeData": {
+    "id": "bcc93d68bf00ed3e",
+    "topic": "Central Topic",
+    "children": [
+      {
+        "topic": "Left Branch 1",
+        "id": "bcc94a3139eeb433",
+        "direction": 0,
+        "children": []
+      },
+      {
+        "topic": "Left Branch 2",
+        "id": "bcc94c9463e00b88",
+        "direction": 0,
+        "children": []
+      },
+      {
+        "topic": "Right Branch 1",
+        "id": "bcc94d2326965b73",
+        "direction": 1,
+        "children": [
+          {
+            "topic": "Sub-branch 1.1",
+            "id": "bcc952b42243432e",
+            "children": []
+          }
+        ]
+      },
+      {
+        "topic": "Right Branch 2",
+        "id": "bcc94c0787107540",
+        "direction": 1,
+        "children": []
+      }
+    ]
+  },
+  "direction": 2,
+  "theme": {
+    "name": "Dark",
+    "type": "dark"
+  }
+}
