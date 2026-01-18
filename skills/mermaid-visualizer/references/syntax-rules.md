@@ -450,20 +450,19 @@ Before finalizing any diagram:
 
 ### Platform-Specific Notes
 
-**Obsidian:**
+**TriliumNext Note / Trilium NOte:**
 - Older Mermaid version, more strict parsing
-- Limited support for `<br/>` (only in circle nodes)
 - Test diagrams before finalizing
 
 **GitHub:**
 - Good Mermaid support
 - Renders most modern syntax
-- May differ slightly from Obsidian rendering
+- May differ slightly from TriliumNext Note / Trilium NOte rendering
 
 **Mermaid Live Editor:**
 - Most up-to-date parser
 - Best for testing new syntax
-- May support features not available in Obsidian/GitHub
+- May support features not available in TriliumNext Note / Trilium NOte / GitHub
 
 ## Quick Reference
 
