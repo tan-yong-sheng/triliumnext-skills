@@ -83,19 +83,11 @@ Create a mindmap of the main ideas in this document
 3. Generate structured output
 4. Save the result to TriliumNext via MCP
 
-## Output Formats
+## Credits
 
-| Skill      | Type         | MIME               |
-| ---------- | ------------ | ------------------ |
-| Excalidraw | JSON canvas  | `application/json` |
-| Mermaid    | Mermaid text | `text/vnd.mermaid` |
-| Mindmap    | JSON         | `application/json` |
-
-## References
-
-* Excalidraw schema: `skills/excalidraw-drawer/references/excalidraw-schema.md`
-* Mermaid rules: `skills/mermaid-visualizer/references/syntax-rules.md`
-* Mindmap schema: `skills/mindmap-builder/references/mindmap-schema.md`
+This project is inspired by:
+- https://github.com/axtonliu/axton-obsidian-visual-skills
+- https://github.com/kepano/obsidian-skills
 
 ## Issues
 
